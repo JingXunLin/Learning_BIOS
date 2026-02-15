@@ -8,19 +8,10 @@
 _start:
     li zero, 0x0
     li t1, 0x1                      # 設定要亮的LED
-    li t2, 0x0                      # counter
-    li t3, 5000000                  # 延遲cycke數量
     li t0, 0xf0000000               # leds_out的地址
 
-_main_loop:
-    sw t1, 0(t0)                    # 寫入LED
-
-_delay_loop:                        # 重複 t2 次，才往下走
-    addi t2, t2, 0x1
-    bne t2, t3, _delay_loop
-    
-    xori t1, t1, 0x3                # 1變2，2變1
-    li t2, 0x0                      # 重置counter
-    
-    jal ra, _main_loop              # 重複主迴圈
+    li sp, 0x10002000               # 設定stack top 為 SRAM的頂端
+    jal ra, main                    # 跳入C語言
+_guard_loop:
+    jal ra, _guard_loop             # 避免main函數return回來，雖然不應該
 
