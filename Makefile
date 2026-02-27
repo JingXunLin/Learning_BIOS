@@ -8,7 +8,7 @@ CFLAGS = -march=rv32i -mabi=ilp32 -nostdlib -ffreestanding
 
 all: firmware.bin firmware.mem
 
-firmware.elf: src/start.S
+firmware.elf: src/start.S src/main.c
 	$(CC) $(CFLAGS) -T linker.ld src/start.S src/main.c -o firmware.elf
 
 firmware.bin: firmware.elf
